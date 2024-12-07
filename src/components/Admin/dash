@@ -1,8 +1,8 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { motion, AnimatePresence, LayoutGroup } from 'framer-motion'
-import { FiHome, FiUsers, FiBriefcase, FiCalendar, FiSettings, FiPieChart, FiTrendingUp, FiCheckCircle, FiAlertCircle, FiSearch, FiBook, FiClock, FiAward, FiFileText, FiBell, FiMail, FiLogOut, FiPlus, FiEdit, FiTrash2, FiChevronRight, FiChevronLeft } from 'react-icons/fi'
+import { FiHome, FiUsers, FiBriefcase, FiCalendar, FiSettings, FiPieChart, FiTrendingUp, FiCheckCircle, FiAlertCircle, FiSearch, FiBook, FiClock, FiAward, FiFileText, FiBell, FiMail, FiLogOut, FiPlus, FiEdit, FiTrash2 } from 'react-icons/fi'
 import { Bar, Pie, Line } from 'react-chartjs-2'
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, ArcElement, PointElement, LineElement } from 'chart.js'
 import { Button } from "@/components/ui/button"
@@ -15,7 +15,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, ArcElement, PointElement, LineElement)
 
@@ -26,8 +25,6 @@ export default function EnhancedAnimatedAdminDashboard() {
   const [searchTerm, setSearchTerm] = useState('')
   const [isNotificationsPanelOpen, setIsNotificationsPanelOpen] = useState(false)
   const [selectedBatch, setSelectedBatch] = useState('all')
-  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false)
-  const [isSearchOpen, setIsSearchOpen] = useState(false)
 
   const sidebarItems = [
     { icon: FiHome, label: 'Dashboard', id: 'dashboard' },
@@ -105,21 +102,6 @@ export default function EnhancedAnimatedAdminDashboard() {
     { id: 2, title: 'Exam Results Updated', message: 'The results for the recent Data Science exam have been uploaded.', time: '1 hour ago' },
     { id: 3, title: 'Company Partnership', message: 'A new company has joined our internship program.', time: '2 hours ago' },
   ]
-
-  useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth < 768) {
-        setIsSidebarCollapsed(true)
-      } else {
-        setIsSidebarCollapsed(false)
-      }
-    }
-
-    window.addEventListener('resize', handleResize)
-    handleResize()
-
-    return () => window.removeEventListener('resize', handleResize)
-  }, [])
 
   const renderDashboard = () => (
     <LayoutGroup>
@@ -219,7 +201,6 @@ export default function EnhancedAnimatedAdminDashboard() {
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.5, delay: 0.6 + index * 0.1 }}
-                    whileHover={{ x: 10, transition: { duration: 0.2 } }}
                   >
                     <activity.icon className="w-5 h-5 mr-3 text-green-500" />
                     <div>
@@ -302,7 +283,7 @@ export default function EnhancedAnimatedAdminDashboard() {
                   <SelectValue placeholder="Select batch" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all">All Batches</SelectItem><SelectItem value="all">All Batches</SelectItem>
+                  <SelectItem value="all">All Batches</SelectItem>
                   <SelectItem value="2023A">Batch 2023A</SelectItem>
                   <SelectItem value="2023B">Batch 2023B</SelectItem>
                   <SelectItem value="2023C">Batch 2023C</SelectItem>
@@ -646,22 +627,13 @@ export default function EnhancedAnimatedAdminDashboard() {
     <div className="flex h-screen bg-background">
       {/* Sidebar */}
       <motion.aside
-        className={`${isSidebarCollapsed ? 'w-16' : 'w-64'} bg-card shadow-md transition-all duration-300 ease-in-out`}
+        className="w-64 bg-card shadow-md"
         initial={{ x: -250 }}
         animate={{ x: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <div className="p-4 flex items-center justify-between">
-          {!isSidebarCollapsed && <h1 className="text-2xl font-bold">IMS Admin</h1>}
-          <AnimatedButton
-            variant="ghost"
-            size="sm"
-            onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-          >
-            {isSidebarCollapsed ? <FiChevronRight /> : <FiChevronLeft />}
-          </AnimatedButton>
+        <div className="p-4">
+          <h1 className="text-2xl font-bold">IMS Admin</h1>
         </div>
         <nav className="mt-4">
           {sidebarItems.map((item, index) => (
@@ -671,30 +643,21 @@ export default function EnhancedAnimatedAdminDashboard() {
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.3, delay: index * 0.05 }}
             >
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <AnimatedButton
-                      variant="ghost"
-                      className={`flex items-center w-full justify-start px-4 py-2 ${
-                        activeTab === item.id ? 'bg-accent text-accent-foreground' : 'text-muted-foreground hover:bg-accent hover:text-accent-foreground'
-                      }`}
-                      onClick={() => setActiveTab(item.id)}
-                      whileHover={{
-                        backgroundColor: "rgba(124, 58, 237, 0.1)",
-                        color: "rgb(124, 58, 237)",
-                      }}
-                      whileTap={{ scale: 0.95 }}
-                    >
-                      <item.icon className="mr-3" />
-                      {!isSidebarCollapsed && item.label}
-                    </AnimatedButton>
-                  </TooltipTrigger>
-                  <TooltipContent side="right">
-                    <p>{item.label}</p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
+              <AnimatedButton
+                variant="ghost"
+                className={`flex items-center w-full justify-start px-4 py-2 ${
+                  activeTab === item.id ? 'bg-accent text-accent-foreground' : 'text-muted-foreground hover:bg-accent hover:text-accent-foreground'
+                }`}
+                onClick={() => setActiveTab(item.id)}
+                whileHover={{
+                  backgroundColor: "rgba(124, 58, 237, 0.1)",
+                  color: "rgb(124, 58, 237)",
+                }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <item.icon className="mr-3" />
+                {item.label}
+              </AnimatedButton>
             </motion.div>
           ))}
         </nav>
@@ -710,34 +673,11 @@ export default function EnhancedAnimatedAdminDashboard() {
         >
           <h1 className="text-3xl font-bold">Welcome, Admin</h1>
           <div className="flex items-center space-x-4">
-            <AnimatedButton
-              variant="outline"
-              size="icon"
-              onClick={() => setIsSearchOpen(!isSearchOpen)}
-              whileHover={{
-                scale: 1.1,
-                backgroundColor: "rgba(124, 58, 237, 0.1)",
-              }}
-              whileTap={{ scale: 0.9 }}
-            >
-              <FiSearch className="h-4 w-4" />
-            </AnimatedButton>
-            <AnimatePresence>
-              {isSearchOpen && (
-                <motion.div
-                  initial={{ width: 0, opacity: 0 }}
-                  animate={{ width: "200px", opacity: 1 }}
-                  exit={{ width: 0, opacity: 0 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <Input
-                    type="text"
-                    placeholder="Search..."
-                    className="w-full"
-                  />
-                </motion.div>
-              )}
-            </AnimatePresence>
+            <Input
+              type="text"
+              placeholder="Search..."
+              className="max-w-xs"
+            />
             <AnimatedButton
               variant="outline"
               size="icon"
@@ -813,4 +753,3 @@ export default function EnhancedAnimatedAdminDashboard() {
     </div>
   )
 }
-
