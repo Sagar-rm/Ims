@@ -4,8 +4,9 @@ import { motion } from 'framer-motion'
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { FiCheck } from 'react-icons/fi'
+import {useToast, toast } from "../components/ui/use-toast"
 
-export default function PricingSection() {
+export default function PricingSection({ handleNavigation }) {
   const staggerChildren = {
     hidden: { opacity: 0 },
     visible: {
@@ -108,7 +109,13 @@ export default function PricingSection() {
                       </li>
                     ))}
                   </ul>
-                  <Button className="w-full bg-violet-600 hover:bg-violet-700">
+                  <Button 
+                    className="w-full bg-violet-600 hover:bg-violet-700"
+                    onClick={() => {
+                      toast.success(`Selected ${plan.name} plan`)
+                      handleNavigation('/signup')
+                    }}
+                  >
                     Get Started
                   </Button>
                 </div>
@@ -120,3 +127,4 @@ export default function PricingSection() {
     </section>
   )
 }
+

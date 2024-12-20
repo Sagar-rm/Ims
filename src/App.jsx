@@ -13,6 +13,7 @@ import Footer from '@/components/Footer'
 import Login from './components/auth/login'
 import SignUp from './components/auth/signup'
 import AdminDashboard from './components/Admin/admin-dashboard'
+import Demo from './demo'
 
 
 const ScrollProgressBar = () => {
@@ -79,6 +80,8 @@ export default function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/admin" element={<AdminDashboard />} />
+          <Route path="/demo" element={<Demo />} />
+
         </Routes>
         <Footer />
       </div>

@@ -2,8 +2,8 @@
 
 import { useState, useEffect, useRef } from 'react'
 import { motion, useScroll, useTransform, useSpring, useInView, AnimatePresence } from 'framer-motion'
-import { Button } from "@/components/button"
-import { Card } from "@/components/card"
+import { Button } from "@/components/ui/button"
+import { Card } from "@/components/ui/card"
 import {
   FiUsers,
   FiClipboard,
@@ -19,6 +19,7 @@ import {
   FiShield
 } from 'react-icons/fi'
 // import Image from 'next/image'
+import { TestimonialSlider } from './testimonial-slider'
 
 export default function Component() {
   const [isVisible, setIsVisible] = useState(false)
@@ -447,9 +448,41 @@ export default function Component() {
         </div>
       </section>
 
+      {/* Testimonials Section */}
+      <section className="py-20 relative overflow-hidden">
+        <div className="container mx-auto px-4">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={staggerChildren}
+            className="text-center mb-16"
+          >
+            <motion.h2
+              variants={fadeUpVariants}
+              className="text-3xl md:text-4xl font-bold mb-6"
+            >
+              What Our Clients Say
+            </motion.h2>
+            <motion.p
+              variants={fadeUpVariants}
+              className="text-gray-400 text-xl max-w-2xl mx-auto"
+            >
+              Hear from companies that have transformed their internship programs with IMS
+            </motion.p>
+          </motion.div>
+          <TestimonialSlider />
+        </div>
+      </section>
+
       {/* CTA Section */}
       <section className="py-20 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-violet-600/20 to-fuchsia-600/20" />
+        <motion.div
+          className="absolute inset-0 bg-gradient-to-r from-violet-600/20 to-fuchsia-600/20"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 1 }}
+        />
         <div className="container mx-auto px-4 relative">
           <motion.div
             className="max-w-3xl mx-auto text-center"
@@ -474,20 +507,30 @@ export default function Component() {
               variants={fadeUpVariants}
               className="flex flex-col sm:flex-row gap-4 justify-center"
             >
-              <Button
-                size="lg"
-                className="bg-violet-600 hover:bg-violet-700 text-lg h-12 px-8"
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
               >
-                Get Started Now
-                <FiArrowRight className="ml-2" />
-              </Button>
-              <Button
-                size="lg"
-                variant="outline"
-                className="border-gray-700 hover:bg-gray-800 text-lg h-12 px-8"
+                <Button
+                  size="lg"
+                  className="bg-violet-600 hover:bg-violet-700 text-lg h-12 px-8"
+                >
+                  Get Started Now
+                  <FiArrowRight className="ml-2" />
+                </Button>
+              </motion.div>
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
               >
-                Schedule Demo
-              </Button>
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="border-gray-700 hover:bg-gray-800 text-lg h-12 px-8"
+                >
+                  Schedule Demo
+                </Button>
+              </motion.div>
             </motion.div>
           </motion.div>
         </div>
@@ -966,3 +1009,4 @@ export default function Component() {
     </div>
   )
 }
+
